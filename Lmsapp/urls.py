@@ -21,6 +21,9 @@ urlpatterns = [
 
     # student routes
     path('dashboard/students/', student),
+    path('dashboard/students/delete/<int:id>', deleteStudent),
+    path('dashboard/students/edit/<int:id>', editStudent),
+
 
     # borrow routes
     path('dashboard/borrow/', borrow),

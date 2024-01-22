@@ -128,10 +128,62 @@ def editBooks(request,id):
 
 
 def student(request):
+    if request.method == "POST":
+        req_name = request.POST.get('name')
+        req_student_id = request.POST.get('student_id')
+        req_image = request.FILES.get('image')
+        req_phone_number = request.POST.get('phone_number')
+
+        student = Student.objects.create(
+            name=req_name,
+            student_id = req_student_id,
+            image = req_image,
+            phone_number = req_phone_number
+            )
+        if student:
+            return redirect('/dashboard/students')
+        else:
+            return render(request,'/dashboard/student',{'error':'Error Something went wrong '})
+    else:    
+        if request.user.is_authenticated:
+            students = Student.objects.all()
+            return render(request, 'dashboard/student/index.html',{'students':students})
+        else:
+            return redirect('/login/')
+        
+def deleteStudent(request,id):
     if request.user.is_authenticated:
-        return render(request, 'dashboard/student/index.html')
+        student = Student.objects.get(id=id)
+        student.delete()
+        return redirect('/dashboard/students/')
     else:
-        return redirect('/login/')
+        return redirect('/login')
+    
+def editStudent(request,id):
+    if request.method == "POST":
+        req_name = request.POST.get('name')
+        req_student_id = request.POST.get('student_id')
+        req_image = request.FILES.get('image')
+        req_phone_number = request.POST.get('phone_number')
+
+        student = Student.objects.get(id=id)
+
+        student.name=req_name
+        student.student_id = req_student_id
+        student.image = req_image
+        student.phone_number = req_phone_number
+        student.save()
+
+        if student:
+            return redirect('/dashboard/students')
+        else:
+            return render(request,'/dashboard/student/index.html',{'error':'Error Something went wrong '})
+    else:    
+        if request.user.is_authenticated:
+            student = Student.objects.get(id=id)
+            return render(request, 'dashboard/student/edit.html',{'student':student})
+        else:
+            return redirect('/login/')
 
 def borrow(requset):
     if requset.user.is_authenticated:
