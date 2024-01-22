@@ -20,7 +20,7 @@
                 <label for="exampleFormControlInput1" class="form-label">Book Category</label>
                 <select  class="form-control" name="category_id">
                 {% for category in categories %}
-                    <option value="{{ category.id }}" {% if book.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                    <option value="{{ category.id }}" {% if book.category_id == category %}selected{% endif %}>{{ category.name }}</option>
                 {% endfor %}
                 </select>
             </div>
