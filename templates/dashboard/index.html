@@ -1,0 +1,38 @@
+{% extends "dashboard/layout/layout.html" %}
+{% block content %}
+<div class="container-fluid mt-3 ">
+    <div class="header d-flex justify-content-between">
+        <h4>Available Books</h4>
+        <input type="text" class="" id="filter-books" placeholder="search..." oninput="filterBooks()"  />
+    </div>
+    <div class="row mt-2" id="book-container">
+        {% for book in books %}
+        <div class="col-lg-3 m-1 card p-4">
+            <h6>{{book.name}}</h6>
+            <span>{{book.author_name}}</span>
+            <span>Available in library : {% if book.no_of_copies == 0 %} <span class="text-danger">Out of copies</span>{% elif book.no_of_copies <= 10 %}  <span class="text-danger">{{book.no_of_copies}} </span>{% else %} {{book.no_of_copies}} {% endif %} </span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function filterBooks() {
+        var input, filter, cards, card, title, author, i;
+        input = document.getElementById("filter-books");
+        console.log(input)
+
+        filter = input.value.toUpperCase();
+        cards = document.getElementById("book-container").getElementsByClassName("card");
+        for (i = 0; i < cards.length; i++) {
+            title = cards[i].getElementsByTagName("h6")[0];
+            author = cards[i].getElementsByTagName("span")[0];
+            if (title.innerHTML.toUpperCase().indexOf(filter) > -1 || author.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

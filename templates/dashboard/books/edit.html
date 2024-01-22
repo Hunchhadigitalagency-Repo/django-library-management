@@ -1,0 +1,32 @@
+{% extends "dashboard/layout/layout.html" %}
+{% block content %}
+<div class="mt-5">
+    <div class="container">
+        <form action="/dashboard/books/edit/{{book.id}}" method="POST">
+            {% csrf_token %}
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book Name</label>
+                <input type="text" class="form-control" value={{book.name}} name="name" placeholder="name">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Author Name</label>
+                <input type="text" class="form-control" value="{{book.author_name}}" name="author_name" placeholder="name">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">No of Copies</label>
+                <input type="number" class="form-control" value={{book.no_of_copies}} name="no_of_copies" placeholder="number">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book Category</label>
+                <select  class="form-control" name="category_id">
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if book.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

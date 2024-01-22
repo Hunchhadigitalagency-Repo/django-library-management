@@ -1,0 +1,59 @@
+{% extends "dashboard/layout/layout.html" %}
+{% block content %}
+<div class="mt-5">
+    <div class="container">
+        <form action="/dashboard/books/" method="POST">
+            {% csrf_token %}
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book Name</label>
+                <input type="text" class="form-control" name="name" placeholder="name">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Author Name</label>
+                <input type="text" class="form-control" name="author_name" placeholder="name">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">No of Copies</label>
+                <input type="number" class="form-control" name="no_of_copies" placeholder="number">
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book Category</label>
+                <select  class="form-control"  name="category_id">
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Book Name</th>
+                    <th scope="col">Author Name</th>
+                    <th scope="col">Available</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.author_name }}</td>
+                    <td>{{ book.no_of_copies }}</td>
+                    <td>
+                        <a href="/dashboard/books/edit/{{book.id}}" class="btn btn-outline-success btn-sm">edit</a>
+                        <a href="/dashboard/books/delete/{{book.id}}" class="btn btn-outline-danger btn-sm">delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

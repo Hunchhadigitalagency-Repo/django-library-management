@@ -1,0 +1,56 @@
+{% extends "dashboard/layout/layout.html" %}
+{% block content %}
+<div class="mt-5">
+    <div class="container">
+        <form action="/dashboard/category/" method="POST">
+            {% csrf_token %}
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book</label>
+                <select class="form-control" name="book_id">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Student</label>
+                <select class="form-control" name="student_id">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Borrowed At</label>
+                <input type="date" class="form-control" name="borrowed_at" placeholder="name">
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"></th>
+                    <th scope="col">Book Details</th>
+                    <th scope="col">Student Details</th>
+                    <th scope="col">Borrowed At</th>
+                    <th scope="col">Returned At</th>
+                    <th scope="col">Is Rerturned</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- {% for category in categories %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        <a href="" class="btn btn-outline-danger btn-sm">edit</a>
+                        <a href="" class="btn btn-outline-success btn-sm">delete</a>
+                    </td>
+                </tr>
+                {% endfor %} -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
