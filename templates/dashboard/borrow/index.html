@@ -2,18 +2,22 @@
 {% block content %}
 <div class="mt-5">
     <div class="container">
-        <form action="/dashboard/category/" method="POST">
+        <form action="/dashboard/borrow/" method="POST">
             {% csrf_token %}
             <div class="my-3 ">
                 <label for="exampleFormControlInput1" class="form-label">Book</label>
                 <select class="form-control" name="book_id">
-                    <option value=""></option>
+                    {% for book in books %}
+                    <option value="{{book.id}}">{{book.name}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="my-3 ">
                 <label for="exampleFormControlInput1" class="form-label">Student</label>
                 <select class="form-control" name="student_id">
-                    <option value=""></option>
+                    {% for student in students %}
+                    <option value="{{student.id}}">{{student.name}} {{student.student_id}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="my-3 ">
@@ -29,7 +33,6 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col"></th>
                     <th scope="col">Book Details</th>
                     <th scope="col">Student Details</th>
                     <th scope="col">Borrowed At</th>
@@ -39,16 +42,20 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- {% for category in categories %}
+                {% for borrow in borrows %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ category.name }}</td>
+                    <td>{{ borrow.book_id.name }}</td>
+                    <td>{{ borrow.student_id.name }}</td>
+                    <td>{{ borrow.borrowed_at }}</td>
+                    <td>{{ borrow.returned_at }}</td>
+                    <td>{{ borrow.is_returned }}</td>
                     <td>
-                        <a href="" class="btn btn-outline-danger btn-sm">edit</a>
-                        <a href="" class="btn btn-outline-success btn-sm">delete</a>
+                        <a href="/dashboard/borrow/edit/{{borrow.id}}" class="btn btn-outline-danger btn-sm">edit</a>
+                        <a href="/dashboard/borrow/delete/{{borrow.id}}" class="btn btn-outline-success btn-sm">delete</a>
                     </td>
                 </tr>
-                {% endfor %} -->
+                {% endfor %} 
             </tbody>
         </table>
     </div>

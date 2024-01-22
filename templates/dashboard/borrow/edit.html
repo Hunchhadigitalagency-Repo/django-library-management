@@ -1,0 +1,32 @@
+{% extends "dashboard/layout/layout.html" %}
+{% block content %}
+<div class="mt-5">
+    <div class="container">
+        <form action="/dashboard/borrow/edit/{{borrow.id}}" method="POST">
+            {% csrf_token %}
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Book</label>
+                <select class="form-control" name="book_id">
+                    {% for book in books %}
+                    <option value="{{book.id}}" {% if borrow.book_id == book %}selected{% endif %}>{{book.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Student</label>
+                <select class="form-control" name="student_id">
+                    {% for student in students %}
+                    <option value="{{student.id}}" {% if borrow.student_id == student %}selected{% endif %}>{{student.name}} {{student.student_id}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="my-3 ">
+                <label for="exampleFormControlInput1" class="form-label">Returned At</label>
+                <input type="date" class="form-control" name="returned_at" placeholder="name">
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

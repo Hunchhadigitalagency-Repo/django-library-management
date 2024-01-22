@@ -185,8 +185,83 @@ def editStudent(request,id):
         else:
             return redirect('/login/')
 
-def borrow(requset):
-    if requset.user.is_authenticated:
-        return render(requset, 'dashboard/borrow/index.html')
+def borrow(request):
+    if request.method == "POST":
+        req_book_id = request.POST.get('book_id')
+        req_student_id = request.POST.get('student_id')
+        req_borrowed_at = request.POST.get('borrowed_at')
+
+        book = Book.objects.get(id=req_book_id)
+        book.no_of_copies -= 1
+        book.save()
+        student = Student.objects.get(id=req_student_id)
+
+        borrow = BookBorrow.objects.create(
+        book_id=book,
+        student_id = student,
+        borrowed_at = req_borrowed_at,
+        )
+
+        borrow.save();
+
+        if borrow:
+            return redirect('/dashboard/borrow/')
+        else:
+            return render(request,'/dashboard/borrow/index.html',{'error':'Error Something went wrong '})
+    else:    
+        if request.user.is_authenticated:
+            students = Student.objects.all();
+            books = Book.objects.all();
+            borrows = BookBorrow.objects.all();
+            return render(request, 'dashboard/borrow/index.html',{'students':students,'books':books,'borrows':borrows})
+        else:
+            return redirect('/login/')
+        
+def deleteBorrow(request,id):
+    if request.user.is_authenticated:
+        borrow = BookBorrow.objects.get(id=id)
+        borrow.delete()
+        return redirect('/dashboard/borrow/')
     else:
-        return redirect('/login/')
+        return redirect('/login')
+    
+def editBorrow(request,id):
+    if request.method == "POST":
+        req_book_id = request.POST.get('book_id')
+        req_student_id = request.POST.get('student_id')
+        req_borrowed_at = request.POST.get('borrowed_at')
+        req_returned_at = request.POST.get('returned_at')
+
+        if req_returned_at:
+            is_returned_value = True
+
+        book = Book.objects.get(id=req_book_id)
+        student = Student.objects.get(id=req_student_id)
+
+        if req_returned_at:
+            is_returned_value = True
+            book.no_of_copies += 1
+            book.save()
+
+
+        borrow = BookBorrow.objects.get(id=id)
+        borrow.book_id=book
+        borrow.student_id = student
+        if req_returned_at:
+            borrow.returned_at = req_returned_at
+            borrow.is_returned = is_returned_value
+
+        borrow.save();
+
+        if borrow:
+            return redirect('/dashboard/borrow')
+        else:
+            return render(request,'/dashboard/borrow/index.html',{'error':'Error Something went wrong '})
+    else:    
+        if request.user.is_authenticated:
+            borrow = BookBorrow.objects.get(id=id)
+            students = Student.objects.all();
+            books = Book.objects.all();
+            return render(request, 'dashboard/borrow/edit.html',{'students':students,'books':books,'borrow':borrow})
+        else:
+            return redirect('/login/')
